@@ -24,7 +24,7 @@ func startRepl() {
 			continue
 		}
 
-		command, exists := cliCommands[words[0]]
+		command, exists := getCliCommands()[words[0]]
 		if exists {
 			err := command.callback()
 			if err != nil {
