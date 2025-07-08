@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"github.com/radzikdev/pokedex/internal/pokeapi"
 )
 
 func cleanInput(text string) []string {
@@ -15,6 +16,7 @@ func cleanInput(text string) []string {
 
 func startRepl() {
 	scanner := bufio.NewScanner(os.Stdin)
+	config := pokeapi.Config{}
 	for {
 		fmt.Print("Pokedex > ")
 		scanner.Scan()
@@ -26,7 +28,7 @@ func startRepl() {
 
 		command, exists := getCliCommands()[words[0]]
 		if exists {
-			err := command.callback()
+			err := command.callback(&config)
 			if err != nil {
 				fmt.Printf("command %v returned: %v", command.name, err)
 			}
@@ -38,7 +40,7 @@ func startRepl() {
 	}
 }
 
-func commandExit() error {
+func commandExit(*pokeapi.Config) error {
 	fmt.Println("Closing the Pokedex... Goodbye!")
 	os.Exit(0)
 	return nil
